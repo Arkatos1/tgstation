@@ -67,41 +67,59 @@ export const BountyConsole = props => {
 };
 
 const Bounties = props => {
-  const { state, bounties } = props;
-  const { config } = state;
-  const { ref } = config;
+  const { bounties } = props;
   let cellstyle={
     'vertical-align': 'middle',
     'horizontal-align': 'middle',
     'text-align': 'center',
-    'min-width': '50px',
-    'min-height': '60px'
-  }
+    'min-width': '100px',
+    'min-height': '75px',
+  };
+  let headerstyle={
+    'vertical-align': 'middle',
+    'horizontal-align': 'middle',
+    'text-align': 'center',
+    'min-width': '70px',
+    'min-height': '35px',
+  };
   return (
-    <Table border = "1">
+    <Table border="1">
+      <Table.Row header>
+        <Table.Cell style={headerstyle}>
+          Name
+        </Table.Cell >
+        <Table.Cell style={headerstyle}>
+          Description
+        </Table.Cell>
+        <Table.Cell style={headerstyle}>
+          Reward
+        </Table.Cell>
+        <Table.Cell style={headerstyle}>
+          Completion
+        </Table.Cell>
+      </Table.Row>
       {bounties.map((bounty => {
         return (
-          <Table.Row key={bounty.name}>
-            <Table.Cell color = "label" style={cellstyle}>
-              {bounty.name}
+          <Table.Row
+            key={bounty.name}
+            bold={bounty.high_priority ? true : false}>
+            <Table.Cell style={cellstyle}>
+              <Box color="label">
+                {bounty.name}
+              </Box>
             </Table.Cell>
             <Table.Cell style={cellstyle}>
               {bounty.description}
             </Table.Cell>
-            <Table.Cell color = "label" style={cellstyle}>
-              {bounty.reward}
+            <Table.Cell collpasing style={cellstyle}>
+              <Box color="average">
+                {bounty.reward}
+              </Box>
             </Table.Cell>
-            <Table.Cell color = "label" collapsing style={cellstyle}>
-              {bounty.units}
-            </Table.Cell>
-            <Table.Cell color = "label" collapsing style={cellstyle}>
-              <Button
-                icon={bounty.claimed ? 'check' : 'hand-point-up'}
-                disabled={!bounty.can_claim}
-                content={bounty.claimed ? 'Completed' : 'Claim'}
-                onClick={() => act(ref, 'claim', {
-                  'ref': bounty.ref,
-                })} />
+            <Table.Cell collapsing style={cellstyle}>
+              <Box color={bounty.claimed ? "good" : "bad"}>
+                {bounty.units}
+              </Box>
             </Table.Cell>
           </Table.Row>
         );
