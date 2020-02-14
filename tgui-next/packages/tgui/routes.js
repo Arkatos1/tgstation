@@ -13,6 +13,7 @@ import { BlackmarketUplink } from './interfaces/BlackmarketUplink';
 import { BluespaceArtillery } from './interfaces/BluespaceArtillery';
 import { Bepis } from './interfaces/Bepis';
 import { BorgPanel } from './interfaces/BorgPanel';
+import { BountyConsole } from './interfaces/BountyConsole';
 import { BrigTimer } from './interfaces/BrigTimer';
 import { Canister } from './interfaces/Canister';
 import { Canvas } from './interfaces/Canvas';
@@ -101,6 +102,7 @@ import { SpaceHeater } from './interfaces/SpaceHeater';
 import { SpawnersMenu } from './interfaces/SpawnersMenu';
 import { StationAlertConsole } from './interfaces/StationAlertConsole';
 import { SuitStorageUnit } from './interfaces/SuitStorageUnit';
+import { SyndContractor } from './interfaces/SyndContractor';
 import { Tank } from './interfaces/Tank';
 import { TankDispenser } from './interfaces/TankDispenser';
 import { Teleporter } from './interfaces/Teleporter';
@@ -111,7 +113,6 @@ import { Uplink } from './interfaces/Uplink';
 import { VaultController } from './interfaces/VaultController';
 import { Vending } from './interfaces/Vending';
 import { Wires } from './interfaces/Wires';
-import { SyndContractor } from './interfaces/SyndContractor';
 
 const ROUTES = {
   achievements: {
@@ -169,6 +170,10 @@ const ROUTES = {
   },
   borgopanel: {
     component: () => BorgPanel,
+    scrollable: true,
+  },
+  bounty_console: {
+    component: () => BountyConsole,
     scrollable: true,
   },
   brig_timer: {

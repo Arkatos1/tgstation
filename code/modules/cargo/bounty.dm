@@ -60,6 +60,8 @@ GLOBAL_LIST_EMPTY(bounties_list)
 				matched_this = TRUE
 				if(!dry_run)
 					B.ship(thing)
+					if(B.can_claim())
+						B.claim()
 		if(!dry_run && matched_this)
 			qdel(thing)
 	return matched_one

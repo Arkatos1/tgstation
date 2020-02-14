@@ -1,17 +1,19 @@
 #define PRINTER_TIMEOUT 10
 
-
-
 /obj/machinery/computer/bounty
 	name = "Nanotrasen bounty console"
 	desc = "Used to check and claim bounties offered by Nanotrasen"
 	icon_screen = "bounty"
 	circuit = /obj/item/circuitboard/computer/bounty
-	light_color = "#E2853D"//orange
+	light_color = "#E2853D" //orange
+	ui_x = 700
+	ui_y = 700
 	var/printer_ready = 0 //cooldown var
 
 /obj/machinery/computer/bounty/Initialize()
 	. = ..()
+	if(!GLOB.bounties_list.len)
+		setup_bounties()
 	printer_ready = world.time + PRINTER_TIMEOUT
 
 /obj/machinery/computer/bounty/proc/print_paper()
@@ -32,65 +34,52 @@
 		<ul><li>Reward: [B.reward_string()]</li>
 		<li>Completed: [B.completion_string()]</li></ul>"}
 
-/obj/machinery/computer/bounty/ui_interact(mob/user)
-	. = ..()
+/obj/machinery/computer/bounty/ui_interact(mob/user, ui_key = "main", datum/tgui/ui = null, force_open = FALSE, \
+									datum/tgui/master_ui = null, datum/ui_state/state = GLOB.default_state)
+	ui = SStgui.try_update_ui(user, src, ui_key, ui, force_open)
+	if(!ui)
+		ui = new(user, src, ui_key, "bounty_console", name, ui_x, ui_y, master_ui, state)
+		ui.open()
 
-	if(!GLOB.bounties_list.len)
-		setup_bounties()
-
+/obj/machinery/computer/bounty/ui_data(mob/user)
+	var/list/data = list()
 	var/datum/bank_account/D = SSeconomy.get_dep_account(ACCOUNT_CAR)
-	var/list/dat = list({"<a href='?src=[REF(src)];refresh=1'>Refresh</a>
-	<a href='?src=[REF(src)];refresh=1;choice=Print'>Print Paper</a>
-	<p>Credits: <b>[D.account_balance]</b></p>
-	<table style="text-align:center;" border="1" cellspacing="0" width="100%">
-	<tr><th>Name</th><th>Description</th><th>Reward</th><th>Completion</th><th>Status</th></tr>"})
+	data["credits"] = D ? D.account_balance : 0
+	data["available_bounties"] = list()
+	data["completed_bounties"] = list()
 	for(var/datum/bounty/B in GLOB.bounties_list)
+		var/list/bounty_data = list(
+			name = B.name,
+			description = B.description,
+			claimed = B.claimed,
+			can_claim = B.can_claim(),
+			high_priority = B.high_priority,
+			reward = B.reward_string(),
+			units = B.completion_string(),
+			ref = REF(B)
+		)
 		if(B.claimed)
-			dat += "<tr style='background-color:#294675;'>"
-		else if(B.can_claim())
-			dat += "<tr style='background-color:#4F7529;'>"
+			data["completed_bounties"] += list(bounty_data)
 		else
-			dat += "<tr style='background-color:#990000;'>"
+			data["available_bounties"] += list(bounty_data)
+	return data
 
-		if(B.high_priority)
-			dat += {"<td><b>[B.name]</b></td>
-			<td><b>High Priority:</b> [B.description]</td>
-			<td><b>[B.reward_string()]</b></td>"}
-		else
-			dat += {"<td>[B.name]</td>
-			<td>[B.description]</td>
-			<td>[B.reward_string()]</td>"}
-		dat += "<td>[B.completion_string()]</td>"
-		if(B.claimed)
-			dat += "<td>Claimed</td>"
-		else if(B.can_claim())
-			dat += "<td><A href='?src=[REF(src)];refresh=1;choice=Claim;d_rec=[REF(B)]'>Claim</a></td>"
-		else
-			dat += "<td>Unclaimed</td>"
-		dat += "</tr>"
-	dat += "</table>"
-	dat = dat.Join()
-	var/datum/browser/popup = new(user, "bounties", "Nanotrasen Bounties", 700, 600)
-	popup.set_content(dat)
-	popup.set_title_image(user.browse_rsc_icon(src.icon, src.icon_state))
-	popup.open()
-
-/obj/machinery/computer/bounty/Topic(href, href_list)
+/obj/machinery/computer/bounty/ui_act(action, list/params)
 	if(..())
 		return
 
-	switch(href_list["choice"])
-		if("Print")
+	switch(action)
+		if("print")
 			if(printer_ready < world.time)
 				printer_ready = world.time + PRINTER_TIMEOUT
 				print_paper()
-
-		if("Claim")
-			var/datum/bounty/B = locate(href_list["d_rec"]) in GLOB.bounties_list
+				playsound(src, "terminal_type", 25, FALSE)
+				. = TRUE
+		if("claim")
+			var/datum/bounty/B = locate(params["ref"]) in GLOB.bounties_list
 			if(B)
 				B.claim()
+				playsound(src, "terminal_type", 25, FALSE)
+				. = TRUE
 
-	if(href_list["refresh"])
-		playsound(src, "terminal_type", 25, FALSE)
-
-	updateUsrDialog()
+#undef PRINTER_TIMEOUT
