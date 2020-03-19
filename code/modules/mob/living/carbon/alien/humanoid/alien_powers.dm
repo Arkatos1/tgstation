@@ -5,21 +5,16 @@ These are general powers. Specific powers are stored under the appropriate alien
 /*Alien spit now works like a taser shot. It won't home in on the target but will act the same once it does hit.
 Doesn't work on other aliens/AI.*/
 
-
 /obj/effect/proc_holder/alien
 	name = "Alien Power"
 	panel = "Alien"
-	var/plasma_cost = 0
-	var/check_turf = FALSE
 	has_action = TRUE
 	base_action = /datum/action/spell_action/alien
 	action_icon = 'icons/mob/actions/actions_xeno.dmi'
 	action_icon_state = "spell_default"
 	action_background_icon_state = "bg_alien"
-
-/obj/effect/proc_holder/alien/Initialize()
-	. = ..()
-	action = new(src)
+	var/plasma_cost = 0
+	var/check_turf = FALSE
 
 /obj/effect/proc_holder/alien/Click()
 	if(!iscarbon(usr))

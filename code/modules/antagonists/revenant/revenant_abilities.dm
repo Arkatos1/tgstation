@@ -102,6 +102,7 @@
 	charge_max = 0
 	panel = "Revenant Abilities"
 	message = "<span class='revennotice'>You toggle your night vision.</span>"
+	base_action = /datum/action/spell_action/spell/revenant
 	action_icon = 'icons/mob/actions/actions_revenant.dmi'
 	action_icon_state = "r_nightvision"
 	action_background_icon_state = "bg_revenant"
@@ -110,6 +111,7 @@
 /obj/effect/proc_holder/spell/targeted/telepathy/revenant
 	name = "Revenant Transmit"
 	panel = "Revenant Abilities"
+	base_action = /datum/action/spell_action/spell/revenant
 	action_icon = 'icons/mob/actions/actions_revenant.dmi'
 	action_icon_state = "r_transmit"
 	action_background_icon_state = "bg_revenant"
@@ -120,6 +122,7 @@
 
 /obj/effect/proc_holder/spell/aoe_turf/revenant
 	clothes_req = 0
+	base_action = /datum/action/spell_action/spell/revenant
 	action_icon = 'icons/mob/actions/actions_revenant.dmi'
 	action_background_icon_state = "bg_revenant"
 	panel = "Revenant Abilities (Locked)"

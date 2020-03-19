@@ -588,7 +588,11 @@
 		return S.can_cast(owner)
 	return FALSE
 
+/datum/action/spell_action/spell/revenant
+	buttontooltipstyle = "revenant"
+
 /datum/action/spell_action/alien
+	buttontooltipstyle = "alien"
 
 /datum/action/spell_action/alien/IsAvailable()
 	if(!target)
@@ -597,8 +601,6 @@
 	if(owner)
 		return ab.cost_check(ab.check_turf,owner,1)
 	return FALSE
-
-
 
 //Preset for general and toggled actions
 /datum/action/innate
