@@ -26,7 +26,6 @@
 /obj/machinery/computer/pod/process(delta_time)
 	if(COOLDOWN_FINISHED(src, massdriver_countdown))
 		timing = FALSE
-		time = initial(time)
 		// alarm() sleeps, so we want to end processing first and can't rely on return PROCESS_KILL
 		end_processing()
 		alarm()
