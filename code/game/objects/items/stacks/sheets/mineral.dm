@@ -24,10 +24,10 @@ Mineral Sheets
  */
 
 GLOBAL_LIST_INIT(sandstone_recipes, list ( \
-	new/datum/stack_recipe("pile of dirt", /obj/machinery/hydroponics/soil, 3, time = 10, one_per_turf = TRUE, on_floor = TRUE), \
-	new/datum/stack_recipe("sandstone door", /obj/structure/mineral_door/sandstone, 10, one_per_turf = TRUE, on_floor = TRUE), \
-	new/datum/stack_recipe("Assistant Statue", /obj/structure/statue/sandstone/assistant, 5, one_per_turf = TRUE, on_floor = TRUE), \
-	new/datum/stack_recipe("Breakdown into sand", /obj/item/stack/ore/glass, 1, one_per_turf = FALSE, on_floor = TRUE) \
+	new/datum/stack_recipe("pile of dirt", CATEGORY_CONSTRUCTION, /obj/machinery/hydroponics/soil, 3, time = 10, one_per_turf = TRUE, on_floor = TRUE), \
+	new/datum/stack_recipe("sandstone door", CATEGORY_CONSTRUCTION, /obj/structure/mineral_door/sandstone, 10, one_per_turf = TRUE, on_floor = TRUE), \
+	new/datum/stack_recipe("Assistant Statue", CATEGORY_CONSTRUCTION, /obj/structure/statue/sandstone/assistant, 5, one_per_turf = TRUE, on_floor = TRUE), \
+	new/datum/stack_recipe("Breakdown into sand", CATEGORY_GENERAL, /obj/item/stack/ore/glass, 1, one_per_turf = FALSE, on_floor = TRUE) \
 	))
 
 /obj/item/stack/sheet/mineral/sandstone
@@ -64,7 +64,7 @@ GLOBAL_LIST_INIT(sandstone_recipes, list ( \
 	merge_type = /obj/item/stack/sheet/mineral/sandbags
 
 GLOBAL_LIST_INIT(sandbag_recipes, list ( \
-	new/datum/stack_recipe("sandbags", /obj/structure/barricade/sandbags, 1, time = 25, one_per_turf = 1, on_floor = 1), \
+	new/datum/stack_recipe("sandbags", CATEGORY_CONSTRUCTION, /obj/structure/barricade/sandbags, 1, time = 25, one_per_turf = 1, on_floor = 1), \
 	))
 
 /obj/item/stack/sheet/mineral/sandbags/get_main_recipes()
@@ -108,11 +108,11 @@ GLOBAL_LIST_INIT(sandbag_recipes, list ( \
 	walltype = /turf/closed/wall/mineral/diamond
 
 GLOBAL_LIST_INIT(diamond_recipes, list ( \
-	new/datum/stack_recipe("diamond door", /obj/structure/mineral_door/transparent/diamond, 10, one_per_turf = 1, on_floor = 1), \
-	new/datum/stack_recipe("diamond tile", /obj/item/stack/tile/mineral/diamond, 1, 4, 20),  \
-	new/datum/stack_recipe("Captain Statue", /obj/structure/statue/diamond/captain, 5, one_per_turf = 1, on_floor = 1), \
-	new/datum/stack_recipe("AI Hologram Statue", /obj/structure/statue/diamond/ai1, 5, one_per_turf = 1, on_floor = 1), \
-	new/datum/stack_recipe("AI Core Statue", /obj/structure/statue/diamond/ai2, 5, one_per_turf = 1, on_floor = 1), \
+	new/datum/stack_recipe("diamond door", CATEGORY_CONSTRUCTION, /obj/structure/mineral_door/transparent/diamond, 10, one_per_turf = 1, on_floor = 1), \
+	new/datum/stack_recipe("diamond tile", CATEGORY_CONSTRUCTION, /obj/item/stack/tile/mineral/diamond, 1, 4, 20),  \
+	new/datum/stack_recipe("Captain Statue", CATEGORY_CONSTRUCTION, /obj/structure/statue/diamond/captain, 5, one_per_turf = 1, on_floor = 1), \
+	new/datum/stack_recipe("AI Hologram Statue", CATEGORY_CONSTRUCTION, /obj/structure/statue/diamond/ai1, 5, one_per_turf = 1, on_floor = 1), \
+	new/datum/stack_recipe("AI Core Statue", CATEGORY_CONSTRUCTION, /obj/structure/statue/diamond/ai2, 5, one_per_turf = 1, on_floor = 1), \
 	))
 
 /obj/item/stack/sheet/mineral/diamond/get_main_recipes()
@@ -137,10 +137,10 @@ GLOBAL_LIST_INIT(diamond_recipes, list ( \
 	walltype = /turf/closed/wall/mineral/uranium
 
 GLOBAL_LIST_INIT(uranium_recipes, list ( \
-	new/datum/stack_recipe("uranium door", /obj/structure/mineral_door/uranium, 10, one_per_turf = 1, on_floor = 1), \
-	new/datum/stack_recipe("uranium tile", /obj/item/stack/tile/mineral/uranium, 1, 4, 20), \
-	new/datum/stack_recipe("Nuke Statue", /obj/structure/statue/uranium/nuke, 5, one_per_turf = 1, on_floor = 1), \
-	new/datum/stack_recipe("Engineer Statue", /obj/structure/statue/uranium/eng, 5, one_per_turf = 1, on_floor = 1), \
+	new/datum/stack_recipe("uranium door", CATEGORY_CONSTRUCTION, /obj/structure/mineral_door/uranium, 10, one_per_turf = 1, on_floor = 1), \
+	new/datum/stack_recipe("uranium tile", CATEGORY_CONSTRUCTION, /obj/item/stack/tile/mineral/uranium, 1, 4, 20), \
+	new/datum/stack_recipe("Nuke Statue", CATEGORY_CONSTRUCTION, /obj/structure/statue/uranium/nuke, 5, one_per_turf = 1, on_floor = 1), \
+	new/datum/stack_recipe("Engineer Statue", CATEGORY_CONSTRUCTION, /obj/structure/statue/uranium/eng, 5, one_per_turf = 1, on_floor = 1), \
 	))
 
 /obj/item/stack/sheet/mineral/uranium/get_main_recipes()
@@ -170,9 +170,9 @@ GLOBAL_LIST_INIT(uranium_recipes, list ( \
 	return TOXLOSS//dont you kids know that stuff is toxic?
 
 GLOBAL_LIST_INIT(plasma_recipes, list ( \
-	new/datum/stack_recipe("plasma door", /obj/structure/mineral_door/transparent/plasma, 10, one_per_turf = 1, on_floor = 1), \
-	new/datum/stack_recipe("plasma tile", /obj/item/stack/tile/mineral/plasma, 1, 4, 20), \
-	new/datum/stack_recipe("Scientist Statue", /obj/structure/statue/plasma/scientist, 5, one_per_turf = 1, on_floor = 1), \
+	new/datum/stack_recipe("plasma door", CATEGORY_CONSTRUCTION, /obj/structure/mineral_door/transparent/plasma, 10, one_per_turf = 1, on_floor = 1), \
+	new/datum/stack_recipe("plasma tile", CATEGORY_CONSTRUCTION, /obj/item/stack/tile/mineral/plasma, 1, 4, 20), \
+	new/datum/stack_recipe("Scientist Statue", CATEGORY_CONSTRUCTION, /obj/structure/statue/plasma/scientist, 5, one_per_turf = 1, on_floor = 1), \
 	))
 
 /obj/item/stack/sheet/mineral/plasma/get_main_recipes()
@@ -209,15 +209,15 @@ GLOBAL_LIST_INIT(plasma_recipes, list ( \
 	walltype = /turf/closed/wall/mineral/gold
 
 GLOBAL_LIST_INIT(gold_recipes, list ( \
-	new/datum/stack_recipe("golden door", /obj/structure/mineral_door/gold, 10, one_per_turf = 1, on_floor = 1), \
-	new/datum/stack_recipe("gold tile", /obj/item/stack/tile/mineral/gold, 1, 4, 20), \
-	new/datum/stack_recipe("blank plaque", /obj/item/plaque, 1), \
-	new/datum/stack_recipe("HoS Statue", /obj/structure/statue/gold/hos, 5, one_per_turf = 1, on_floor = 1), \
-	new/datum/stack_recipe("HoP Statue", /obj/structure/statue/gold/hop, 5, one_per_turf = 1, on_floor = 1), \
-	new/datum/stack_recipe("CE Statue", /obj/structure/statue/gold/ce, 5, one_per_turf = 1, on_floor = 1), \
-	new/datum/stack_recipe("RD Statue", /obj/structure/statue/gold/rd, 5, one_per_turf = 1, on_floor = 1), \
-	new/datum/stack_recipe("Simple Crown", /obj/item/clothing/head/crown, 5), \
-	new/datum/stack_recipe("CMO Statue", /obj/structure/statue/gold/cmo, 5, one_per_turf = 1, on_floor = 1), \
+	new/datum/stack_recipe("golden door", CATEGORY_CONSTRUCTION, /obj/structure/mineral_door/gold, 10, one_per_turf = 1, on_floor = 1), \
+	new/datum/stack_recipe("gold tile", CATEGORY_CONSTRUCTION, /obj/item/stack/tile/mineral/gold, 1, 4, 20), \
+	new/datum/stack_recipe("blank plaque", CATEGORY_CONSTRUCTION, /obj/item/plaque, 1), \
+	new/datum/stack_recipe("HoS Statue", CATEGORY_CONSTRUCTION, /obj/structure/statue/gold/hos, 5, one_per_turf = 1, on_floor = 1), \
+	new/datum/stack_recipe("HoP Statue", CATEGORY_CONSTRUCTION, /obj/structure/statue/gold/hop, 5, one_per_turf = 1, on_floor = 1), \
+	new/datum/stack_recipe("CE Statue", CATEGORY_CONSTRUCTION, /obj/structure/statue/gold/ce, 5, one_per_turf = 1, on_floor = 1), \
+	new/datum/stack_recipe("RD Statue", CATEGORY_CONSTRUCTION, /obj/structure/statue/gold/rd, 5, one_per_turf = 1, on_floor = 1), \
+	new/datum/stack_recipe("Simple Crown", CATEGORY_CONSTRUCTION, /obj/item/clothing/head/crown, 5), \
+	new/datum/stack_recipe("CMO Statue", CATEGORY_CONSTRUCTION, /obj/structure/statue/gold/cmo, 5, one_per_turf = 1, on_floor = 1), \
 	))
 
 /obj/item/stack/sheet/mineral/gold/get_main_recipes()
@@ -242,13 +242,13 @@ GLOBAL_LIST_INIT(gold_recipes, list ( \
 	walltype = /turf/closed/wall/mineral/silver
 
 GLOBAL_LIST_INIT(silver_recipes, list ( \
-	new/datum/stack_recipe("silver door", /obj/structure/mineral_door/silver, 10, one_per_turf = 1, on_floor = 1), \
-	new/datum/stack_recipe("silver tile", /obj/item/stack/tile/mineral/silver, 1, 4, 20), \
-	new/datum/stack_recipe("Med Officer Statue", /obj/structure/statue/silver/md, 5, one_per_turf = 1, on_floor = 1), \
-	new/datum/stack_recipe("Janitor Statue", /obj/structure/statue/silver/janitor, 5, one_per_turf = 1, on_floor = 1), \
-	new/datum/stack_recipe("Sec Officer Statue", /obj/structure/statue/silver/sec, 5, one_per_turf = 1, on_floor = 1), \
-	new/datum/stack_recipe("Sec Borg Statue", /obj/structure/statue/silver/secborg, 5, one_per_turf = 1, on_floor = 1), \
-	new/datum/stack_recipe("Med Borg Statue", /obj/structure/statue/silver/medborg, 5, one_per_turf = 1, on_floor = 1), \
+	new/datum/stack_recipe("silver door", CATEGORY_CONSTRUCTION, /obj/structure/mineral_door/silver, 10, one_per_turf = 1, on_floor = 1), \
+	new/datum/stack_recipe("silver tile", CATEGORY_CONSTRUCTION, /obj/item/stack/tile/mineral/silver, 1, 4, 20), \
+	new/datum/stack_recipe("Med Officer Statue", CATEGORY_CONSTRUCTION, /obj/structure/statue/silver/md, 5, one_per_turf = 1, on_floor = 1), \
+	new/datum/stack_recipe("Janitor Statue", CATEGORY_CONSTRUCTION, /obj/structure/statue/silver/janitor, 5, one_per_turf = 1, on_floor = 1), \
+	new/datum/stack_recipe("Sec Officer Statue", CATEGORY_CONSTRUCTION, /obj/structure/statue/silver/sec, 5, one_per_turf = 1, on_floor = 1), \
+	new/datum/stack_recipe("Sec Borg Statue", CATEGORY_CONSTRUCTION, /obj/structure/statue/silver/secborg, 5, one_per_turf = 1, on_floor = 1), \
+	new/datum/stack_recipe("Med Borg Statue", CATEGORY_CONSTRUCTION, /obj/structure/statue/silver/medborg, 5, one_per_turf = 1, on_floor = 1), \
 	))
 
 /obj/item/stack/sheet/mineral/silver/get_main_recipes()
@@ -273,8 +273,8 @@ GLOBAL_LIST_INIT(silver_recipes, list ( \
 	walltype = /turf/closed/wall/mineral/bananium
 
 GLOBAL_LIST_INIT(bananium_recipes, list ( \
-	new/datum/stack_recipe("bananium tile", /obj/item/stack/tile/mineral/bananium, 1, 4, 20), \
-	new/datum/stack_recipe("Clown Statue", /obj/structure/statue/bananium/clown, 5, one_per_turf = 1, on_floor = 1), \
+	new/datum/stack_recipe("bananium tile", CATEGORY_CONSTRUCTION, /obj/item/stack/tile/mineral/bananium, 1, 4, 20), \
+	new/datum/stack_recipe("Clown Statue", CATEGORY_CONSTRUCTION, /obj/structure/statue/bananium/clown, 5, one_per_turf = 1, on_floor = 1), \
 	))
 
 /obj/item/stack/sheet/mineral/bananium/get_main_recipes()
@@ -302,8 +302,8 @@ GLOBAL_LIST_INIT(bananium_recipes, list ( \
 	walltype = /turf/closed/wall/mineral/titanium
 
 GLOBAL_LIST_INIT(titanium_recipes, list ( \
-	new/datum/stack_recipe("titanium tile", /obj/item/stack/tile/mineral/titanium, 1, 4, 20), \
-	new/datum/stack_recipe("shuttle seat", /obj/structure/chair/comfy/shuttle, 2, one_per_turf = TRUE, on_floor = TRUE), \
+	new/datum/stack_recipe("titanium tile", CATEGORY_CONSTRUCTION, /obj/item/stack/tile/mineral/titanium, 1, 4, 20), \
+	new/datum/stack_recipe("shuttle seat", CATEGORY_FURNITURE, /obj/structure/chair/comfy/shuttle, 2, one_per_turf = TRUE, on_floor = TRUE), \
 	))
 
 /obj/item/stack/sheet/mineral/titanium/get_main_recipes()
@@ -334,7 +334,7 @@ GLOBAL_LIST_INIT(titanium_recipes, list ( \
 	walltype = /turf/closed/wall/mineral/plastitanium
 
 GLOBAL_LIST_INIT(plastitanium_recipes, list ( \
-	new/datum/stack_recipe("plastitanium tile", /obj/item/stack/tile/mineral/plastitanium, 1, 4, 20), \
+	new/datum/stack_recipe("plastitanium tile", CATEGORY_CONSTRUCTION, /obj/item/stack/tile/mineral/plastitanium, 1, 4, 20), \
 	))
 
 /obj/item/stack/sheet/mineral/plastitanium/get_main_recipes()
@@ -360,10 +360,10 @@ GLOBAL_LIST_INIT(plastitanium_recipes, list ( \
 	material_type = /datum/material/snow
 
 GLOBAL_LIST_INIT(snow_recipes, list ( \
-	new/datum/stack_recipe("Snow wall", /turf/closed/wall/mineral/snow, 5, one_per_turf = 1, on_floor = 1), \
-	new/datum/stack_recipe("Snowman", /obj/structure/statue/snow/snowman, 5, one_per_turf = 1, on_floor = 1), \
-	new/datum/stack_recipe("Snowball", /obj/item/toy/snowball, 1), \
-	new/datum/stack_recipe("Snow tile", /obj/item/stack/tile/mineral/snow, 1, 4, 20), \
+	new/datum/stack_recipe("Snow wall", CATEGORY_CONSTRUCTION, /turf/closed/wall/mineral/snow, 5, one_per_turf = 1, on_floor = 1), \
+	new/datum/stack_recipe("Snowman", CATEGORY_CONSTRUCTION, /obj/structure/statue/snow/snowman, 5, one_per_turf = 1, on_floor = 1), \
+	new/datum/stack_recipe("Snowball", CATEGORY_GENERAL, /obj/item/toy/snowball, 1), \
+	new/datum/stack_recipe("Snow tile", CATEGORY_CONSTRUCTION, /obj/item/stack/tile/mineral/snow, 1, 4, 20), \
 	))
 
 /obj/item/stack/sheet/mineral/snow/get_main_recipes()
@@ -378,7 +378,7 @@ GLOBAL_LIST_INIT(snow_recipes, list ( \
 
 
 GLOBAL_LIST_INIT(adamantine_recipes, list(
-	new /datum/stack_recipe("incomplete servant golem shell", /obj/item/golem_shell/servant, req_amount=1, res_amount=1),
+	new /datum/stack_recipe("incomplete servant golem shell", CATEGORY_GENERAL, /obj/item/golem_shell/servant, req_amount=1, res_amount=1),
 	))
 
 /obj/item/stack/sheet/mineral/adamantine
@@ -433,12 +433,11 @@ GLOBAL_LIST_INIT(adamantine_recipes, list(
 	merge_type = /obj/item/stack/sheet/mineral/abductor
 
 GLOBAL_LIST_INIT(abductor_recipes, list ( \
-	new/datum/stack_recipe("alien bed", /obj/structure/bed/abductor, 2, one_per_turf = 1, on_floor = 1), \
-	new/datum/stack_recipe("alien locker", /obj/structure/closet/abductor, 2, time = 15, one_per_turf = 1, on_floor = 1), \
-	new/datum/stack_recipe("alien table frame", /obj/structure/table_frame/abductor, 1, time = 15, one_per_turf = 1, on_floor = 1), \
-	new/datum/stack_recipe("alien airlock assembly", /obj/structure/door_assembly/door_assembly_abductor, 4, time = 20, one_per_turf = 1, on_floor = 1), \
-	null, \
-	new/datum/stack_recipe("alien floor tile", /obj/item/stack/tile/mineral/abductor, 1, 4, 20), \
+	new/datum/stack_recipe("alien bed", CATEGORY_FURNITURE, /obj/structure/bed/abductor, 2, one_per_turf = 1, on_floor = 1), \
+	new/datum/stack_recipe("alien locker", CATEGORY_GENERAL, /obj/structure/closet/abductor, 2, time = 15, one_per_turf = 1, on_floor = 1), \
+	new/datum/stack_recipe("alien table frame", CATEGORY_FURNITURE, /obj/structure/table_frame/abductor, 1, time = 15, one_per_turf = 1, on_floor = 1), \
+	new/datum/stack_recipe("alien airlock assembly", CATEGORY_ELECTRONICS, /obj/structure/door_assembly/door_assembly_abductor, 4, time = 20, one_per_turf = 1, on_floor = 1), \
+	new/datum/stack_recipe("alien floor tile", CATEGORY_CONSTRUCTION, /obj/item/stack/tile/mineral/abductor, 1, 4, 20), \
 	))
 
 /obj/item/stack/sheet/mineral/abductor/get_main_recipes()
@@ -481,10 +480,10 @@ GLOBAL_LIST_INIT(abductor_recipes, list ( \
 
 //Metal Hydrogen
 GLOBAL_LIST_INIT(metalhydrogen_recipes, list(
-	new /datum/stack_recipe("incomplete servant golem shell", /obj/item/golem_shell/servant, req_amount=20, res_amount=1),
-	new /datum/stack_recipe("ancient armor", /obj/item/clothing/suit/armor/elder_atmosian, req_amount = 8, res_amount = 1),
-	new /datum/stack_recipe("ancient helmet", /obj/item/clothing/head/helmet/elder_atmosian, req_amount = 5, res_amount = 1),
-	new /datum/stack_recipe("metallic hydrogen axe", /obj/item/fireaxe/metal_h2_axe, req_amount = 15, res_amount = 1),
+	new /datum/stack_recipe("incomplete servant golem shell", CATEGORY_GENERAL, /obj/item/golem_shell/servant, req_amount=20, res_amount=1),
+	new /datum/stack_recipe("ancient armor", CATEGORY_CLOTHING, /obj/item/clothing/suit/armor/elder_atmosian, req_amount = 8, res_amount = 1),
+	new /datum/stack_recipe("ancient helmet", CATEGORY_CLOTHING, /obj/item/clothing/head/helmet/elder_atmosian, req_amount = 5, res_amount = 1),
+	new /datum/stack_recipe("metallic hydrogen axe", CATEGORY_WEAPON, /obj/item/fireaxe/metal_h2_axe, req_amount = 15, res_amount = 1),
 	))
 
 /obj/item/stack/sheet/mineral/metal_hydrogen

@@ -133,17 +133,29 @@
   *
   * Arguments:
   * * recipe_to_iterate - The list of recipes we are using to build recipes
+  * * build_categories - If we should build categories for each recipe
   */
-/obj/item/stack/proc/recursively_build_recipes(list/recipe_to_iterate)
+/obj/item/stack/proc/recursively_build_recipes(list/recipe_to_iterate, build_categories = TRUE)
+	var/list/categories = list()
 	var/list/L = list()
 	for(var/recipe in recipe_to_iterate)
 		if(istype(recipe, /datum/stack_recipe_list))
 			var/datum/stack_recipe_list/R = recipe
-			L["[R.title]"] = recursively_build_recipes(R.recipes)
+			if(build_categories)
+				if(!categories[R.category])
+					categories[R.category] = list()
+				categories[R.category]["[R.title]"] = recursively_build_recipes(R.recipes, FALSE)
+			else
+				L["[R.title]"] = recursively_build_recipes(R.recipes)
 		if(istype(recipe, /datum/stack_recipe))
 			var/datum/stack_recipe/R = recipe
-			L["[R.title]"] = build_recipe(R)
-	return L
+			if(build_categories)
+				if(!categories[R.category])
+					categories[R.category] = list()
+				categories[R.category]["[R.title]"] = build_recipe(R)
+			else
+				L["[R.title]"] = build_recipe(R)
+	return build_categories ? categories : L
 
 /**
   * Returns a list of properties of a given recipe
@@ -176,12 +188,6 @@
 				return TRUE
 	return FALSE
 
-/obj/item/stack/attack_self(mob/user)
-	interact(user)
-
-/obj/item/stack/interact(mob/user)
-	ui_interact(user)
-
 /obj/item/stack/ui_state(mob/user)
 	return GLOB.hands_state
 
@@ -198,7 +204,13 @@
 
 /obj/item/stack/ui_static_data(mob/user)
 	var/list/data = list()
-	data["recipes"] = recursively_build_recipes(recipes)
+	var/list/built_recipes = recursively_build_recipes(recipes)
+	data["recipes"] = list()
+	for(var/category in built_recipes)
+		var/list/cat = list(
+			"name" = category,
+			"items" = built_recipes[category])
+		data["recipes"] += list(cat)
 	return data
 
 /obj/item/stack/ui_act(action, params)
@@ -476,6 +488,8 @@
  */
 /datum/stack_recipe
 	var/title = "ERROR"
+	/// Category of the stack recipe
+	var/category
 	var/result_type
 	var/req_amount = 1
 	var/res_amount = 1
@@ -489,10 +503,9 @@
 	var/trait_booster = null
 	var/trait_modifier = 1
 
-/datum/stack_recipe/New(title, result_type, req_amount = 1, res_amount = 1, max_res_amount = 1,time = 0, one_per_turf = FALSE, on_floor = FALSE, window_checks = FALSE, placement_checks = FALSE, applies_mats = FALSE, trait_booster = null, trait_modifier = 1)
-
-
+/datum/stack_recipe/New(title, category, result_type, req_amount = 1, res_amount = 1, max_res_amount = 1,time = 0, one_per_turf = FALSE, on_floor = FALSE, window_checks = FALSE, placement_checks = FALSE, applies_mats = FALSE, trait_booster = null, trait_modifier = 1)
 	src.title = title
+	src.category = category
 	src.result_type = result_type
 	src.req_amount = req_amount
 	src.res_amount = res_amount
@@ -505,13 +518,17 @@
 	src.applies_mats = applies_mats
 	src.trait_booster = trait_booster
 	src.trait_modifier = trait_modifier
+
 /*
  * Recipe list datum
  */
 /datum/stack_recipe_list
 	var/title = "ERROR"
+	/// Category of the stack recipe list
+	var/category
 	var/list/recipes
 
-/datum/stack_recipe_list/New(title, recipes)
+/datum/stack_recipe_list/New(title, category, recipes)
 	src.title = title
+	src.category = category
 	src.recipes = recipes

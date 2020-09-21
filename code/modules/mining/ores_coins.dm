@@ -103,8 +103,8 @@
 	mine_experience = 0 //its sand
 
 GLOBAL_LIST_INIT(sand_recipes, list(\
-		new /datum/stack_recipe("sandstone", /obj/item/stack/sheet/mineral/sandstone, 1, 1, 50),\
-		new /datum/stack_recipe("aesthetic volcanic floor tile", /obj/item/stack/tile/basalt, 2, 1, 50)\
+	new /datum/stack_recipe("sandstone", CATEGORY_GENERAL, /obj/item/stack/sheet/mineral/sandstone, 1, 1, 50),\
+	new /datum/stack_recipe("aesthetic volcanic floor tile", CATEGORY_CONSTRUCTION, /obj/item/stack/tile/basalt, 2, 1, 50)\
 ))
 
 /obj/item/stack/ore/glass/get_main_recipes()

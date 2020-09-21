@@ -117,3 +117,17 @@
 #define RCD_WINDOW_DIRECTIONAL "directional"
 #define RCD_WINDOW_NORMAL "glass"
 #define RCD_WINDOW_REINFORCED "reinforced glass"
+
+// Stack crafting recipe categories
+#define CATEGORY_GENERAL	"General"
+#define CATEGORY_CONSTRUCTION	"Construction"
+#define CATEGORY_FURNITURE	"Furniture"
+#define CATEGORY_PLUMBING	"Plumbing"
+#define CATEGORY_WEAPON	"Weapons"
+#define CATEGORY_AMMO	"Ammunition"
+#define CATEGORY_STACK_ROBOT	"Robots"
+#define CATEGORY_STACK_MISC	"Misc"
+#define CATEGORY_PRIMAL	"Tribal"
+#define CATEGORY_CLOTHING	"Clothing"
+#define CATEGORY_ELECTRONICS	"Electronics"
+#define CATEGORY_WINDOW	"Windows"

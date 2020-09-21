@@ -1,6 +1,6 @@
 import { sortBy } from 'common/collections';
-import { useBackend } from "../backend";
-import { Box, Button, Section, Collapsible, Table } from "../components";
+import { useBackend, useLocalState } from "../backend";
+import { Box, Button, Flex, Section, Collapsible, Table, Tabs } from "../components";
 import { Window } from "../layouts";
 
 export const Stack = (props, context) => {
@@ -8,19 +8,46 @@ export const Stack = (props, context) => {
 
   const {
     amount,
-    recipes,
+    recipes = [],
   } = data;
 
-  const height = Math.max(90 + Object.keys(recipes).length * 25, 250);
+  const [
+    selectedCategory,
+    setSelectedCategory,
+  ] = useLocalState(context, 'category', recipes[0]?.name);
+
+  const items = recipes
+    .find(category => category.name === selectedCategory)?.items
+    || [];
 
   return (
     <Window
-      width={400}
-      height={Math.min(height, 500)}
+      width={500}
+      height={600}
       resizable>
       <Window.Content scrollable>
         <Section title={"Amount: " + amount}>
-          <RecipeList recipes={recipes} />
+          <Flex>
+            <Flex.Item>
+              <Tabs vertical>
+                {recipes.map(category => (
+                  <Tabs.Tab
+                    key={category.name}
+                    selected={category.name === selectedCategory}
+                    onClick={() => setSelectedCategory(category.name)}>
+                    {category.name} ({category.items?.length || 0})
+                  </Tabs.Tab>
+                ))}
+              </Tabs>
+            </Flex.Item>
+            <Flex.Item>
+              <Table>
+                <Section level={2}>
+                  <RecipeList recipes={items} />
+                </Section>
+              </Table>
+            </Flex.Item>
+          </Flex>
         </Section>
       </Window.Content>
     </Window>
@@ -141,7 +168,7 @@ const Recipe = (props, context) => {
   const maxMultiplier = buildMultiplier(recipe, amount);
 
   return (
-    <Box mb={0.8}>
+    <Box mb={1}>
       <Table>
         <Table.Row>
           <Table.Cell>
