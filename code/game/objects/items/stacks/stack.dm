@@ -2,7 +2,6 @@
  * Contains:
  * 		Stacks
  * 		Recipe datum
- * 		Recipe list datum
  */
 
 /*
@@ -14,7 +13,8 @@
 	gender = PLURAL
 	material_modifier = 0.01
 	max_integrity = 100
-	var/list/datum/stack_recipe/recipes
+	/// List of available recipes
+	var/list/recipes
 	var/singular_name
 	var/amount = 1
 	var/max_amount = 50 //also see stack recipes initialisation, param "max_res_amount" must be equal to this max_amount
@@ -39,6 +39,10 @@
 	var/absorption_rate
 	/// Amount of matter for RCD
 	var/matter_amount = 0
+	/// Currently selected category in the UI
+	var/selected_cat
+	/// If the UI compact mode is on
+	var/compact_mode = FALSE
 
 /obj/item/stack/on_grind()
 	for(var/i in 1 to grind_results.len) //This should only call if it's ground, so no need to check if grind_results exists
@@ -78,8 +82,21 @@
 				if(MAT_CATEGORY_BASE_RECIPES)
 					var/list/temp = SSmaterials.rigid_stack_recipes.Copy()
 					recipes += temp
+	recipes = create_recipe_categories()
 	update_weight()
 	update_icon()
+
+/**
+  * Creates recipe categories and puts recipes into them
+  */
+/obj/item/stack/proc/create_recipe_categories()
+	var/list/recipe_categories = list()
+	for(var/recipe in recipes)
+		var/datum/stack_recipe/selected_recipe = recipe
+		if(!recipe_categories[selected_recipe.category])
+			recipe_categories[selected_recipe.category] = list()
+		recipe_categories[selected_recipe.category][selected_recipe] = selected_recipe
+	return recipe_categories
 
 /obj/item/stack/proc/get_main_recipes()
 	SHOULD_CALL_PARENT(TRUE)
@@ -128,65 +145,10 @@
 	else
 		. = (amount)
 
-/**
-  * Builds all recipes in a given recipe list and returns an association list containing them
-  *
-  * Arguments:
-  * * recipe_to_iterate - The list of recipes we are using to build recipes
-  * * build_categories - If we should build categories for each recipe
-  */
-/obj/item/stack/proc/recursively_build_recipes(list/recipe_to_iterate, build_categories = TRUE)
-	var/list/categories = list()
-	var/list/L = list()
-	for(var/recipe in recipe_to_iterate)
-		if(istype(recipe, /datum/stack_recipe_list))
-			var/datum/stack_recipe_list/R = recipe
-			if(build_categories)
-				if(!categories[R.category])
-					categories[R.category] = list()
-				categories[R.category]["[R.title]"] = recursively_build_recipes(R.recipes, FALSE)
-			else
-				L["[R.title]"] = recursively_build_recipes(R.recipes)
-		if(istype(recipe, /datum/stack_recipe))
-			var/datum/stack_recipe/R = recipe
-			if(build_categories)
-				if(!categories[R.category])
-					categories[R.category] = list()
-				categories[R.category]["[R.title]"] = build_recipe(R)
-			else
-				L["[R.title]"] = build_recipe(R)
-	return build_categories ? categories : L
-
-/**
-  * Returns a list of properties of a given recipe
-  *
-  * Arguments:
-  * * R - The stack recipe we are using to get a list of properties
-  */
-/obj/item/stack/proc/build_recipe(datum/stack_recipe/R)
+/obj/item/stack/ui_assets(mob/user)
 	return list(
-		"res_amount" = R.res_amount,
-		"max_res_amount" = R.max_res_amount,
-		"req_amount" = R.req_amount,
-		"ref" = "\ref[R]",
+		get_asset_datum(/datum/asset/spritesheet/stack_recipes),
 	)
-
-/**
-  * Checks if the recipe is valid to be used
-  *
-  * Arguments:
-  * * R - The stack recipe we are checking if it is valid
-  * * recipe_list - The list of recipes we are using to check the given recipe
-  */
-/obj/item/stack/proc/is_valid_recipe(datum/stack_recipe/R, list/recipe_list)
-	for(var/S in recipe_list)
-		if(S == R)
-			return TRUE
-		if(istype(S, /datum/stack_recipe_list))
-			var/datum/stack_recipe_list/L = S
-			if(is_valid_recipe(R, L.recipes))
-				return TRUE
-	return FALSE
 
 /obj/item/stack/ui_state(mob/user)
 	return GLOB.hands_state
@@ -200,17 +162,24 @@
 /obj/item/stack/ui_data(mob/user)
 	var/list/data = list()
 	data["amount"] = get_amount()
+	data["compactMode"] = compact_mode
 	return data
 
 /obj/item/stack/ui_static_data(mob/user)
 	var/list/data = list()
-	var/list/built_recipes = recursively_build_recipes(recipes)
-	data["recipes"] = list()
-	for(var/category in built_recipes)
+	data["categories"] = list()
+	for(var/category in recipes)
 		var/list/cat = list(
 			"name" = category,
-			"items" = built_recipes[category])
-		data["recipes"] += list(cat)
+			"items" = (category == selected_cat ? list() : null))
+		for(var/recipe in recipes[category])
+			var/datum/stack_recipe/selected_recipe = recipes[category][recipe]
+			cat["items"] += list(list(
+				"name" = selected_recipe.title,
+				"cost" = selected_recipe.req_amount,
+				"ref" = REF(selected_recipe),
+			))
+		data["categories"] += list(cat)
 	return data
 
 /obj/item/stack/ui_act(action, params)
@@ -224,7 +193,7 @@
 				qdel(src)
 				return
 			var/datum/stack_recipe/R = locate(params["ref"])
-			if(!is_valid_recipe(R, recipes)) //href exploit protection
+			if(!R)
 				return
 			var/multiplier = text2num(params["multiplier"])
 			if(!multiplier || (multiplier <= 0)) //href exploit protection
@@ -282,6 +251,12 @@
 				for (var/obj/item/I in O)
 					qdel(I)
 			//BubbleWrap END
+			return TRUE
+		if("select")
+			selected_cat = params["category"]
+			return TRUE
+		if("compact_toggle")
+			compact_mode = !compact_mode
 			return TRUE
 
 /obj/item/stack/vv_edit_var(vname, vval)
@@ -483,6 +458,8 @@
 	if(istype(M) && M.dirty < 100)
 		M.dirty += amount
 
+GLOBAL_LIST_EMPTY(stack_recipes)
+
 /*
  * Recipe datum
  */
@@ -518,17 +495,4 @@
 	src.applies_mats = applies_mats
 	src.trait_booster = trait_booster
 	src.trait_modifier = trait_modifier
-
-/*
- * Recipe list datum
- */
-/datum/stack_recipe_list
-	var/title = "ERROR"
-	/// Category of the stack recipe list
-	var/category
-	var/list/recipes
-
-/datum/stack_recipe_list/New(title, category, recipes)
-	src.title = title
-	src.category = category
-	src.recipes = recipes
+	GLOB.stack_recipes += src

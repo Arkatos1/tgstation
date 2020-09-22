@@ -429,6 +429,52 @@
 		Insert(imgid, I)
 	return ..()
 
+// Icons for recipes that can be crafted in the Stack menu
+/datum/asset/spritesheet/stack_recipes
+	name = "stackrecipes"
+
+/datum/asset/spritesheet/stack_recipes/register()
+	for(var/path in GLOB.stack_recipes)
+		var/datum/stack_recipe/D = path
+
+		var/icon_file
+		var/icon_state
+		var/icon/I
+
+		// construct the icon and slap it into the resource cache
+		var/atom/item = initial(D.result_type)
+		if (!ispath(item, /atom))
+			continue  // shouldn't happen, but just in case
+
+		// circuit boards become their resulting machines or computers
+		if (ispath(item, /obj/item/circuitboard))
+			var/obj/item/circuitboard/C = item
+			var/machine = initial(C.build_path)
+			if (machine)
+				item = machine
+
+		icon_file = initial(item.icon)
+		icon_state = initial(item.icon_state)
+
+		if(!(icon_state in icon_states(icon_file)))
+			warning("design [D] with icon '[icon_file]' missing state '[icon_state]'")
+			continue
+		I = icon(icon_file, icon_state, SOUTH)
+
+		// computers (and snowflakes) get their screen and keyboard sprites
+		if (ispath(item, /obj/machinery/computer) || ispath(item, /obj/machinery/power/solar_control))
+			var/obj/machinery/computer/C = item
+			var/screen = initial(C.icon_screen)
+			var/keyboard = initial(C.icon_keyboard)
+			var/all_states = icon_states(icon_file)
+			if (screen && (screen in all_states))
+				I.Blend(icon(icon_file, screen, SOUTH), ICON_OVERLAY)
+			if (keyboard && (keyboard in all_states))
+				I.Blend(icon(icon_file, keyboard, SOUTH), ICON_OVERLAY)
+
+		Insert([D.title], I)
+	return ..()
+
 /datum/asset/simple/genetics
 	assets = list(
 		"dna_discovered.gif" = 'html/dna_discovered.gif',
