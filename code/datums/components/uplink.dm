@@ -124,6 +124,11 @@
 	// an unlocked uplink blocks also opening the PDA or headset menu
 	return COMPONENT_NO_INTERACT
 
+/datum/component/uplink/ui_assets(mob/user)
+	return list(
+		get_asset_datum(/datum/asset/spritesheet/uplink),
+	)
+
 /datum/component/uplink/ui_state(mob/user)
 	return GLOB.inventory_state
 
@@ -174,10 +179,12 @@
 							break
 					if(is_inaccessible)
 						continue
+			var/atom/uplink_item = I.item
 			cat["items"] += list(list(
 				"name" = I.name,
 				"cost" = I.cost,
 				"desc" = I.desc,
+				"icon_state" = uplink_item?.icon_state,
 			))
 		data["categories"] += list(cat)
 	return data

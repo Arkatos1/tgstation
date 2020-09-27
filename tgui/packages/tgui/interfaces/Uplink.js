@@ -1,3 +1,4 @@
+import { classes } from 'common/react';
 import { createSearch, decodeHtmlEntities } from 'common/string';
 import { Fragment } from 'inferno';
 import { useBackend, useLocalState } from '../backend';
@@ -176,10 +177,15 @@ const ItemList = (props, context) => {
   return items.map(item => (
     <Section
       key={item.name}
-      title={item.name}
+      title={
+        <ItemHeader
+          name={item.name}
+          icon_state={item.icon_state} />
+      }
       level={2}
       buttons={(
         <Button
+          mt={2.5}
           content={item.cost + ' ' + currencySymbol}
           disabled={item.disabled}
           onmouseover={() => setHoveredItem(item)}
@@ -191,4 +197,19 @@ const ItemList = (props, context) => {
       {decodeHtmlEntities(item.desc)}
     </Section>
   ));
+};
+
+const ItemHeader = (props, context) => {
+  const { act, data } = useBackend(context);
+  const {
+    name,
+    icon_state,
+  } = props;
+  return (
+    <Fragment>
+      <span
+        className={classes(['uplink32x32', icon_state])} />
+      {" " + name}
+    </Fragment>
+  );
 };

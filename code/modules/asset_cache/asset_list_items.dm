@@ -433,6 +433,38 @@
 		Insert(imgid, I)
 	return ..()
 
+/datum/asset/spritesheet/uplink
+	name = "uplink"
+
+/datum/asset/spritesheet/uplink/register()
+	for(var/selected_item in GLOB.uplink_items)
+		var/datum/uplink_item/uplink_item = selected_item
+		var/atom/item = initial(uplink_item.item)
+		if(!ispath(item, /atom))
+			continue
+
+		var/icon_file = initial(item.icon)
+		var/icon_state = initial(item.icon_state)
+		var/icon/I
+
+		if(!(icon_state in icon_states(icon_file)))
+			warning("design [uplink_item] with icon '[icon_file]' missing state '[icon_state]'")
+			continue
+		I = icon(icon_file, icon_state, SOUTH)
+
+		if(ispath(item, /obj/machinery/computer) || ispath(item, /obj/machinery/power/solar_control))
+			var/obj/machinery/computer/C = item
+			var/screen = initial(C.icon_screen)
+			var/keyboard = initial(C.icon_keyboard)
+			var/all_states = icon_states(icon_file)
+			if(screen && (screen in all_states))
+				I.Blend(icon(icon_file, screen, SOUTH), ICON_OVERLAY)
+			if(keyboard && (keyboard in all_states))
+				I.Blend(icon(icon_file, keyboard, SOUTH), ICON_OVERLAY)
+
+		Insert(initial(item.icon_state), I)
+	return ..()
+
 /datum/asset/simple/genetics
 	assets = list(
 		"dna_discovered.gif" = 'html/dna_discovered.gif',
