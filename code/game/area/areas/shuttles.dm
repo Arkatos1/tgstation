@@ -9,10 +9,11 @@
 	has_gravity = STANDARD_GRAVITY
 	always_unpowered = FALSE
 	// Loading the same shuttle map at a different time will produce distinct area instances.
-	area_flags = NONE
+	area_flags = NO_ALERTS
 	icon_state = "shuttle"
 	flags_1 = CAN_BE_DIRTY_1
-	area_limited_icon_smoothing = TRUE
+	area_limited_icon_smoothing = /area/shuttle
+	sound_environment = SOUND_ENVIRONMENT_ROOM
 
 
 /area/shuttle/PlaceOnTopReact(list/new_baseturfs, turf/fake_turf_type, flags)
@@ -29,6 +30,7 @@
 /area/shuttle/syndicate
 	name = "Syndicate Infiltrator"
 	ambientsounds = HIGHSEC
+	area_limited_icon_smoothing = /area/shuttle/syndicate
 
 /area/shuttle/syndicate/bridge
 	name = "Syndicate Infiltrator Control"
@@ -64,6 +66,7 @@
 /area/shuttle/abandoned
 	name = "Abandoned Ship"
 	requires_power = TRUE
+	area_limited_icon_smoothing = /area/shuttle/abandoned
 
 /area/shuttle/abandoned/bridge
 	name = "Abandoned Ship Bridge"
@@ -115,6 +118,7 @@
 
 /area/shuttle/mining
 	name = "Mining Shuttle"
+	area_flags = NONE //Set this so it doesn't inherit NO_ALERTS
 
 /area/shuttle/mining/large
 	name = "Mining Shuttle"
@@ -122,6 +126,7 @@
 
 /area/shuttle/labor
 	name = "Labor Camp Shuttle"
+	area_flags = NONE //Set this so it doesn't inherit NO_ALERTS
 
 /area/shuttle/supply
 	name = "Supply Shuttle"

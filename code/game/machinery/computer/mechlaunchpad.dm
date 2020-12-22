@@ -78,19 +78,19 @@
 			to_chat(user, "<span class='notice'>You upload the data from the [multitool.name]'s buffer.</span>")
 
 /**
-  * Tries to call the launch proc on the connected mechpad, returns if there is no connected mechpad or there is no mecha on the pad
-  * Arguments:
-  * * user - The user of the proc
-  * * where - The mechpad that the connected mechpad will try to send a supply pod to
-  */
-/obj/machinery/computer/mechpad/proc/try_launch(var/mob/user, var/obj/machinery/mechpad/where)
+ * Tries to call the launch proc on the connected mechpad, returns if there is no connected mechpad or there is no mecha on the pad
+ * Arguments:
+ * * user - The user of the proc
+ * * where - The mechpad that the connected mechpad will try to send a supply pod to
+ */
+/obj/machinery/computer/mechpad/proc/try_launch(mob/user, obj/machinery/mechpad/where)
 	if(!connected_mechpad)
 		to_chat(user, "<span class='warning'>[src] has no connected pad!</span>")
 		return
 	if(connected_mechpad.panel_open)
 		to_chat(user, "<span class='warning'>[src]'s pad has its' panel open! It won't work!</span>")
 		return
-	if(!(locate(/obj/mecha) in get_turf(connected_mechpad)))
+	if(!(locate(/obj/vehicle/sealed/mecha) in get_turf(connected_mechpad)))
 		to_chat(user, "<span class='warning'>[src] detects no mecha on the pad!</span>")
 		return
 	connected_mechpad.launch(where)

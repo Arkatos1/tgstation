@@ -73,13 +73,17 @@
 #define HIDESUITSTORAGE	(1<<1)
 #define HIDEJUMPSUIT	(1<<2)	//these first four are only used in exterior suits
 #define HIDESHOES		(1<<3)
-#define HIDEMASK		(1<<4)	//these last six are only used in masks and headgear.
+#define HIDEMASK		(1<<4)	//these next seven are only used in masks and headgear.
 #define HIDEEARS		(1<<5)	// (ears means headsets and such)
 #define HIDEEYES		(1<<6)	// Whether eyes and glasses are hidden
 #define HIDEFACE		(1<<7)	// Whether we appear as unknown.
 #define HIDEHAIR		(1<<8)
 #define HIDEFACIALHAIR	(1<<9)
 #define HIDENECK		(1<<10)
+/// for wigs, only obscures the headgear
+#define HIDEHEADGEAR	(1<<11)
+///for lizard snouts, because some HIDEFACE clothes don't actually conceal that portion of the head.
+#define HIDESNOUT		(1<<12)
 
 //bitflags for clothing coverage - also used for limbs
 #define HEAD		(1<<0)
@@ -141,6 +145,7 @@ GLOBAL_LIST_INIT(advanced_hardsuit_allowed, typecacheof(list(
 	/obj/item/flashlight,
 	/obj/item/gun,
 	/obj/item/melee/baton,
+	/obj/item/melee/classic_baton,
 	/obj/item/reagent_containers/spray/pepper,
 	/obj/item/restraints/handcuffs,
 	/obj/item/tank/internals)))
@@ -152,6 +157,7 @@ GLOBAL_LIST_INIT(security_hardsuit_allowed, typecacheof(list(
 	/obj/item/gun/ballistic,
 	/obj/item/gun/energy,
 	/obj/item/melee/baton,
+	/obj/item/melee/classic_baton,
 	/obj/item/reagent_containers/spray/pepper,
 	/obj/item/restraints/handcuffs,
 	/obj/item/tank/internals)))
@@ -181,7 +187,7 @@ GLOBAL_LIST_INIT(security_vest_allowed, typecacheof(list(
 	/obj/item/gun/energy,
 	/obj/item/kitchen/knife/combat,
 	/obj/item/melee/baton,
-	/obj/item/melee/classic_baton/telescopic,
+	/obj/item/melee/classic_baton,
 	/obj/item/reagent_containers/spray/pepper,
 	/obj/item/restraints/handcuffs,
 	/obj/item/tank/internals/emergency_oxygen,
@@ -196,7 +202,7 @@ GLOBAL_LIST_INIT(security_wintercoat_allowed, typecacheof(list(
 	/obj/item/gun/energy,
 	/obj/item/lighter,
 	/obj/item/melee/baton,
-	/obj/item/melee/classic_baton/telescopic,
+	/obj/item/melee/classic_baton,
 	/obj/item/reagent_containers/spray/pepper,
 	/obj/item/restraints/handcuffs,
 	/obj/item/tank/internals/emergency_oxygen,

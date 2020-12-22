@@ -7,6 +7,8 @@
 	var/static/list/falling_atoms = list() // Atoms currently falling into chasms
 	var/static/list/forbidden_types = typecacheof(list(
 		/obj/singularity,
+		/obj/energy_ball,
+		/obj/narsie,
 		/obj/docking_port,
 		/obj/structure/lattice,
 		/obj/structure/stone_tile,
@@ -29,6 +31,8 @@
 	START_PROCESSING(SSobj, src) // process on create, in case stuff is still there
 
 /datum/component/chasm/proc/Entered(datum/source, atom/movable/AM)
+	SIGNAL_HANDLER
+
 	START_PROCESSING(SSobj, src)
 	drop_stuff(AM)
 

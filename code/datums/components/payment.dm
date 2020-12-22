@@ -1,15 +1,16 @@
 
 /**
-  * Handles simple payment operations where the cost of the object in question doesn't change.
-  *
-  * What this is useful for:
-  * Basic forms of vending.
-  * Objects that can drain the owner's money linearly.
-  * What this is not useful for:
-  * Things where the seller may want to fluxuate the price of the object.
-  * Improving standardizing every form of payment handing, as some custom handling is specific to that object.
-  **/
+ * Handles simple payment operations where the cost of the object in question doesn't change.
+ *
+ * What this is useful for:
+ * Basic forms of vending.
+ * Objects that can drain the owner's money linearly.
+ * What this is not useful for:
+ * Things where the seller may want to fluxuate the price of the object.
+ * Improving standardizing every form of payment handing, as some custom handling is specific to that object.
+ **/
 /datum/component/payment
+	dupe_mode = COMPONENT_DUPE_UNIQUE ///NO OVERRIDING TO CHEESE BOUNTIES
 	///Standardized of operation.
 	var/cost = 10
 	///Flavor style for handling cash (Friendly? Hostile? etc.)
@@ -28,12 +29,16 @@
 	RegisterSignal(parent, COMSIG_OBJ_ATTEMPT_CHARGE_CHANGE, .proc/change_cost)
 
 /datum/component/payment/proc/attempt_charge(datum/source, atom/movable/target, extra_fees = 0)
+	SIGNAL_HANDLER
+
 	if(!cost) //In case a free variant of anything is made it'll skip charging anyone.
 		return
 	if(!ismob(target))
 		return COMPONENT_OBJ_CANCEL_CHARGE
-	var/mob/user = target
-	var/obj/item/card/id/card = user.get_idcard(TRUE)
+	var/mob/living/user = target
+	var/obj/item/card/id/card
+	if(istype(user))
+		card = user.get_idcard(TRUE)
 	if(!card)
 		switch(transaction_style)
 			if(PAYMENT_FRIENDLY)
@@ -66,6 +71,8 @@
 	playsound(src, 'sound/effects/cashregister.ogg', 20, TRUE)
 
 /datum/component/payment/proc/change_cost(datum/source, new_cost)
+	SIGNAL_HANDLER
+
 	if(!isnum(new_cost))
 		CRASH("change_cost called with variable new_cost as not a number.")
 	cost = new_cost

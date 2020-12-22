@@ -5,9 +5,10 @@
 	icon_state = "grille"
 	density = TRUE
 	anchored = TRUE
+	pass_flags_self = PASSGRILLE
 	flags_1 = CONDUCT_1 | RAD_PROTECT_CONTENTS_1 | RAD_NO_CONTAMINATE_1
 	pressure_resistance = 5*ONE_ATMOSPHERE
-	armor = list("melee" = 50, "bullet" = 70, "laser" = 70, "energy" = 100, "bomb" = 10, "bio" = 100, "rad" = 100, "fire" = 0, "acid" = 0)
+	armor = list(MELEE = 50, BULLET = 70, LASER = 70, ENERGY = 100, BOMB = 10, BIO = 100, RAD = 100, FIRE = 0, ACID = 0)
 	max_integrity = 50
 	integrity_failure = 0.4
 	var/rods_type = /obj/item/stack/rods
@@ -31,7 +32,7 @@
 	var/ratio = obj_integrity / max_integrity
 	ratio = CEILING(ratio*4, 1) * 25
 
-	if(smoothing_flags)
+	if(smoothing_flags & (SMOOTH_CORNERS|SMOOTH_BITMASK))
 		QUEUE_SMOOTH(src)
 
 	if(ratio > 50)
@@ -85,7 +86,7 @@
 	if(!.)
 		return
 	if(!shock(user, 70) && !QDELETED(src)) //Last hit still shocks but shouldn't deal damage to the grille
-		take_damage(rand(5,10), BRUTE, "melee", 1)
+		take_damage(rand(5,10), BRUTE, MELEE, 1)
 
 /obj/structure/grille/attack_paw(mob/user)
 	return attack_hand(user)
@@ -107,20 +108,18 @@
 	user.visible_message("<span class='warning'>[user] hits [src].</span>", null, null, COMBAT_MESSAGE_RANGE)
 	log_combat(user, src, "hit")
 	if(!shock(user, 70))
-		take_damage(rand(5,10), BRUTE, "melee", 1)
+		take_damage(rand(5,10), BRUTE, MELEE, 1)
 
 /obj/structure/grille/attack_alien(mob/living/user)
 	user.do_attack_animation(src)
 	user.changeNext_move(CLICK_CD_MELEE)
 	user.visible_message("<span class='warning'>[user] mangles [src].</span>", null, null, COMBAT_MESSAGE_RANGE)
 	if(!shock(user, 70))
-		take_damage(20, BRUTE, "melee", 1)
+		take_damage(20, BRUTE, MELEE, 1)
 
 /obj/structure/grille/CanAllowThrough(atom/movable/mover, turf/target)
 	. = ..()
-	if(mover.pass_flags & PASSGRILLE)
-		return TRUE
-	else if(!. && istype(mover, /obj/projectile))
+	if(!. && istype(mover, /obj/projectile))
 		return prob(30)
 
 /obj/structure/grille/CanAStarPass(ID, dir, caller)
@@ -141,13 +140,13 @@
 			W.play_tool_sound(src, 100)
 			set_anchored(!anchored)
 			user.visible_message("<span class='notice'>[user] [anchored ? "fastens" : "unfastens"] [src].</span>", \
-								 "<span class='notice'>You [anchored ? "fasten [src] to" : "unfasten [src] from"] the floor.</span>")
+				"<span class='notice'>You [anchored ? "fasten [src] to" : "unfasten [src] from"] the floor.</span>")
 			return
 	else if(istype(W, /obj/item/stack/rods) && broken)
 		var/obj/item/stack/rods/R = W
 		if(!shock(user, 90))
 			user.visible_message("<span class='notice'>[user] rebuilds the broken grille.</span>", \
-								 "<span class='notice'>You rebuild the broken grille.</span>")
+				"<span class='notice'>You rebuild the broken grille.</span>")
 			new grille_type(src.loc)
 			R.use(1)
 			qdel(src)
