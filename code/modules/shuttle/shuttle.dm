@@ -440,9 +440,12 @@
 			var/atom/atom = each
 			atom.connect_to_shuttle(src, dock)
 
-
-//this is a hook for custom behaviour. Maybe at some point we could add checks to see if engines are intact
+/**
+ * Checks if we are allowed to move the shuttle itself
+ */
 /obj/docking_port/mobile/proc/canMove()
+	if(SSshuttle.lockdown && is_station_level(z))
+		return FALSE
 	return TRUE
 
 //this is to check if this shuttle can physically dock at dock S
@@ -533,7 +536,7 @@
 	mode = SHUTTLE_RECALL
 
 /obj/docking_port/mobile/proc/enterTransit()
-	if((SSshuttle.lockdown && is_station_level(z)) || !canMove()) //emp went off, no escape
+	if(!canMove())
 		mode = SHUTTLE_IDLE
 		return
 	previous = null

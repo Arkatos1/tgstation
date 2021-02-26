@@ -17,9 +17,9 @@
 	var/self_paid = FALSE
 	///Can this console approve purchase requests?
 	var/can_approve_requests = FALSE
-	///What do we say when the shuttle moves with living beings on it.
-	var/safety_warning = "For safety reasons, the automated supply shuttle \
-		cannot transport live organisms, human remains, classified nuclear weaponry, \
+	///What do we say when the shuttle is unable to move due to the lockdown or having living beings on it.
+	var/safety_warning = "For safety reasons, the automated supply shuttle cannot move \
+		under lockdown or transport live organisms, human remains, classified nuclear weaponry, \
 		homing beacons or machinery housing any form of artificial intelligence."
 	///If you're being raided by pirates, what do you tell the crew?
 	var/blockade_warning = "Bluespace instability detected. Shuttle movement impossible."
