@@ -39,7 +39,7 @@
 		. += "It is set to [rotation_angle] degrees, and the rotation is [can_rotate ? "unlocked" : "locked"]."
 		if(!admin)
 			if(can_rotate)
-				. += "<span class='notice'>Alt-click to adjust its direction.</span>"
+				. += "<span class='notice'><b>Right-click</b> with an empty hand to adjust its direction.</span>"
 			else
 				. += "<span class='notice'>Use screwdriver to unlock the rotation.</span>"
 
@@ -163,12 +163,13 @@
 		set_angle(SIMPLIFY_DEGREES(new_angle))
 	return TRUE
 
-/obj/structure/reflector/AltClick(mob/user)
+/obj/structure/reflector/attack_hand_secondary(mob/user, modifiers)
 	if(!user.canUseTopic(src, BE_CLOSE, NO_DEXTERITY, FALSE, !iscyborg(user)))
-		return
-	else if(finished)
-		rotate(user)
-
+		return SECONDARY_ATTACK_CONTINUE_CHAIN
+	if(!finished)
+		return SECONDARY_ATTACK_CONTINUE_CHAIN
+	rotate(user)
+	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 //TYPES OF REFLECTORS, SINGLE, DOUBLE, BOX
 

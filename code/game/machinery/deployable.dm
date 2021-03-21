@@ -152,12 +152,13 @@
 
 /obj/item/grenade/barrier/examine(mob/user)
 	. = ..()
-	. += "<span class='notice'>Alt-click to toggle modes.</span>"
+	. += "<span class='notice'><b>Right-click</b> with an empty hand to toggle modes.</span>"
 
-/obj/item/grenade/barrier/AltClick(mob/living/carbon/user)
+/obj/item/grenade/barrier/attack_hand_secondary(mob/living/carbon/user, modifiers)
 	if(!istype(user) || !user.canUseTopic(src, BE_CLOSE))
-		return
+		return SECONDARY_ATTACK_CONTINUE_CHAIN
 	toggle_mode(user)
+	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/item/grenade/barrier/proc/toggle_mode(mob/user)
 	switch(mode)

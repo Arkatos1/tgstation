@@ -11,8 +11,8 @@
 
 /obj/item/assembly/health/examine(mob/user)
 	. = ..()
-	. += "Use it in hand to turn it off/on and Alt-click to swap between \"detect death\" mode and \"detect critical state\" mode."
-	. += "[src.scanning ? "The sensor is on and you can see [health_scan] displayed on the screen" : "The sensor is off"]."
+	. += "Use it in hand to turn it off/on and <b>Right-click</b> with an empty hand to swap between \"detect death\" mode and \"detect critical state\" mode."
+	. += "[scanning ? "The sensor is on and you can see [health_scan] displayed on the screen" : "The sensor is off"]."
 
 /obj/item/assembly/health/activate()
 	if(!..())
@@ -30,13 +30,14 @@
 	update_appearance()
 	return secured
 
-/obj/item/assembly/health/AltClick(mob/living/user)
+/obj/item/assembly/health/attack_hand_secondary(mob/user, modifiers)
 	if(alarm_health == HEALTH_THRESHOLD_CRIT)
 		alarm_health = HEALTH_THRESHOLD_DEAD
 		to_chat(user, "<span class='notice'>You toggle [src] to \"detect death\" mode.</span>")
 	else
 		alarm_health = HEALTH_THRESHOLD_CRIT
 		to_chat(user, "<span class='notice'>You toggle [src] to \"detect critical state\" mode.</span>")
+	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/item/assembly/health/process()
 	if(!scanning || !secured)

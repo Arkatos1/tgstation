@@ -576,7 +576,7 @@ GENE SCANNER
 
 /obj/item/analyzer/examine(mob/user)
 	. = ..()
-	. += "<span class='notice'>Alt-click [src] to activate the barometer function.</span>"
+	. += "<span class='notice'><b>Right-click</b> [src] with an empty hand to activate the barometer function.</span>"
 
 /obj/item/analyzer/suicide_act(mob/living/carbon/user)
 	user.visible_message("<span class='suicide'>[user] begins to analyze [user.p_them()]self with [src]! The display shows that [user.p_theyre()] dead!</span>")
@@ -623,17 +623,15 @@ GENE SCANNER
 		render_list += "<span class='info'>Temperature: [round(environment.temperature-T0C, 0.01)] &deg;C ([round(environment.temperature, 0.01)] K)</span>\n"
 	to_chat(user, jointext(render_list, ""), trailing_newline = FALSE) // we handled the last <br> so we don't need handholding
 
-/obj/item/analyzer/AltClick(mob/user) //Barometer output for measuring when the next storm happens
-	..()
-
+/obj/item/analyzer/attack_hand_secondary(mob/user, modifiers) //Barometer output for measuring when the next storm happens
 	if(user.canUseTopic(src, BE_CLOSE))
 		if(cooldown)
 			to_chat(user, "<span class='warning'>[src]'s barometer function is preparing itself.</span>")
-			return
+			return SECONDARY_ATTACK_CONTINUE_CHAIN
 
 		var/turf/T = get_turf(user)
 		if(!T)
-			return
+			return SECONDARY_ATTACK_CONTINUE_CHAIN
 
 		playsound(src, 'sound/effects/pop.ogg', 100)
 		var/area/user_area = T.loc
@@ -641,7 +639,7 @@ GENE SCANNER
 
 		if(!user_area.outdoors)
 			to_chat(user, "<span class='warning'>[src]'s barometer function won't work indoors!</span>")
-			return
+			return SECONDARY_ATTACK_CONTINUE_CHAIN
 
 		for(var/V in SSweather.processing)
 			var/datum/weather/W = V
@@ -652,7 +650,7 @@ GENE SCANNER
 		if(ongoing_weather)
 			if((ongoing_weather.stage == MAIN_STAGE) || (ongoing_weather.stage == WIND_DOWN_STAGE))
 				to_chat(user, "<span class='warning'>[src]'s barometer function can't trace anything while the storm is [ongoing_weather.stage == MAIN_STAGE ? "already here!" : "winding down."]</span>")
-				return
+				return SECONDARY_ATTACK_CONTINUE_CHAIN
 
 			to_chat(user, "<span class='notice'>The next [ongoing_weather] will hit in [butchertime(ongoing_weather.next_hit_time - world.time)].</span>")
 			if(ongoing_weather.aesthetic)
@@ -666,6 +664,7 @@ GENE SCANNER
 				to_chat(user, "<span class='warning'>[src]'s barometer function says a storm will land in approximately [butchertime(fixed)].</span>")
 		cooldown = TRUE
 		addtimer(CALLBACK(src,/obj/item/analyzer/proc/ping), cooldown_time)
+		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/item/analyzer/proc/ping()
 	if(isliving(loc))

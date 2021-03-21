@@ -165,14 +165,14 @@ GLOBAL_LIST_EMPTY(bodycontainers) //Let them act as spawnpoints for revenants an
 
 /obj/structure/bodycontainer/morgue/examine(mob/user)
 	. = ..()
-	. += "<span class='notice'>The speaker is [beeper ? "enabled" : "disabled"]. Alt-click to toggle it.</span>"
+	. += "<span class='notice'>The speaker is [beeper ? "enabled" : "disabled"]. <b>Right-click</b> with an empty hand to toggle it.</span>"
 
-/obj/structure/bodycontainer/morgue/AltClick(mob/user)
-	..()
+/obj/structure/bodycontainer/morgue/attack_hand_secondary(mob/user, modifiers)
 	if(!user.canUseTopic(src, !issilicon(user)))
-		return
+		return SECONDARY_ATTACK_CONTINUE_CHAIN
 	beeper = !beeper
 	to_chat(user, "<span class='notice'>You turn the speaker function [beeper ? "on" : "off"].</span>")
+	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/structure/bodycontainer/morgue/update_icon_state()
 	if(!connected || connected.loc != src) // Open or tray is gone.

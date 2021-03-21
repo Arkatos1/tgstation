@@ -702,11 +702,11 @@
 /obj/item/storage/belt/sabre/examine(mob/user)
 	. = ..()
 	if(length(contents))
-		. += "<span class='notice'>Alt-click it to quickly draw the blade.</span>"
+		. += "<span class='notice'><b>Right-click</b> with an empty hand to quickly draw the blade.</span>"
 
-/obj/item/storage/belt/sabre/AltClick(mob/user)
+/obj/item/storage/belt/sabre/attack_hand_secondary(mob/user, modifiers)
 	if(!user.canUseTopic(src, BE_CLOSE, NO_DEXTERITY, FALSE, TRUE))
-		return
+		return SECONDARY_ATTACK_CONTINUE_CHAIN
 	if(length(contents))
 		var/obj/item/I = contents[1]
 		user.visible_message("<span class='notice'>[user] takes [I] out of [src].</span>", "<span class='notice'>You take [I] out of [src].</span>")
@@ -714,6 +714,7 @@
 		update_appearance()
 	else
 		to_chat(user, "<span class='warning'>[src] is empty!</span>")
+	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/item/storage/belt/sabre/update_icon_state()
 	icon_state = initial(inhand_icon_state)

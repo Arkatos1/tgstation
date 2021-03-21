@@ -143,17 +143,18 @@
 		ui = new(user, src, "Sleeper", name)
 		ui.open()
 
-/obj/machinery/sleeper/AltClick(mob/user)
+/obj/machinery/sleeper/attack_hand_secondary(mob/user, modifiers)
 	if(!user.canUseTopic(src, !issilicon(user)))
-		return
+		return SECONDARY_ATTACK_CONTINUE_CHAIN
 	if(state_open)
 		close_machine()
 	else
 		open_machine()
+	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/machinery/sleeper/examine(mob/user)
 	. = ..()
-	. += "<span class='notice'>Alt-click [src] to [state_open ? "close" : "open"] it.</span>"
+	. += "<span class='notice'><b>Right-click</b> [src] with an empty hand to [state_open ? "close" : "open"] it.</span>"
 
 /obj/machinery/sleeper/process()
 	..()
