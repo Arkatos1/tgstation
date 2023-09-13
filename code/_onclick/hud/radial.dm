@@ -210,6 +210,9 @@ GLOBAL_LIST_EMPTY(radial_menus)
 	//Position
 	var/py = round(cos(angle) * radius) + py_shift
 	var/px = round(sin(angle) * radius)
+
+	E.screen_loc = offset_to_screen_loc(px, py)
+
 	if(anim)
 		var/timing = anim_order * 0.5
 		var/matrix/starting = matrix()
